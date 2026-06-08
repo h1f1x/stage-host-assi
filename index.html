@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stage Host · Frannz Salon · Di 9. Juni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0e14;
+    --bg2:#13161f;
+    --card:#171b27;
+    --line:#262c3b;
+    --ink:#eef1f7;
+    --mut:#9aa3b8;
+    --dim:#697089;
+    --accent:#d7ff42;      /* electric lime – time/active */
+    --magenta:#ff4d9d;     /* buzzwords nod */
+    --amber:#ffb22e;       /* 10 min cue */
+    --red:#ff5a52;         /* 5 min / overrun */
+    --green:#46e0a0;
+    --shadow:0 24px 60px -20px rgba(0,0,0,.75);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(255,77,157,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(215,255,66,.07), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Archivo",system-ui,sans-serif;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{height:100dvh;display:flex;flex-direction:column;max-width:680px;margin:0 auto;position:relative}
+
+  /* top bar */
+  .top{
+    display:flex;align-items:center;gap:10px;
+    padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;
+  }
+  .brand{font-family:"Bricolage Grotesque";font-weight:800;letter-spacing:.4px;font-size:13px;color:var(--mut);text-transform:uppercase}
+  .brand b{color:var(--magenta)}
+  .clock{margin-left:auto;font-family:"JetBrains Mono";font-size:13px;color:var(--mut);background:var(--bg2);border:1px solid var(--line);padding:4px 9px;border-radius:8px}
+  .gear{background:var(--bg2);border:1px solid var(--line);color:var(--mut);width:32px;height:30px;border-radius:8px;font-size:15px;cursor:pointer}
+  .gear:active{transform:scale(.94)}
+
+  /* progress dots */
+  .rail{display:flex;gap:5px;padding:0 16px 8px}
+  .rail .seg{flex:1;height:4px;border-radius:3px;background:var(--line);overflow:hidden;position:relative}
+  .rail .seg.done{background:var(--mut)}
+  .rail .seg.active{background:linear-gradient(90deg,var(--magenta),var(--accent))}
+
+  /* stage */
+  .stage{flex:1;position:relative;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:8px 18px 14px;display:flex;flex-direction:column;overflow-y:auto;
+    opacity:0;transform:translateX(28px);pointer-events:none;transition:opacity .28s ease,transform .28s ease}
+  .slide.show{opacity:1;transform:none;pointer-events:auto}
+  .slide.left{transform:translateX(-28px)}
+
+  .kicker{font-family:"JetBrains Mono";font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+  .kicker .pill{color:var(--bg);background:var(--accent);padding:2px 7px;border-radius:6px;font-weight:700;margin-right:8px}
+  .kicker .ph{color:var(--magenta)}
+
+  /* AGENDA */
+  .agenda h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:30px;line-height:1.02;margin:10px 0 2px;letter-spacing:-.5px}
+  .agenda .sub{color:var(--mut);font-size:14px;margin-bottom:14px}
+  .agenda .sub b{color:var(--ink)}
+  .list{display:flex;flex-direction:column;gap:7px;padding-bottom:8px}
+  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 13px;cursor:pointer;transition:border-color .15s,transform .08s}
+  .row:active{transform:scale(.99)}
+  .row .t{font-family:"JetBrains Mono";font-size:13px;color:var(--accent);min-width:42px;font-weight:700}
+  .row .tt{font-size:14px;font-weight:600;line-height:1.2}
+  .row .sp{font-size:12px;color:var(--mut)}
+  .row .num{margin-left:auto;font-family:"Bricolage Grotesque";font-weight:800;font-size:18px;color:var(--line)}
+  .row.now{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .row.now .num{color:var(--accent)}
+  .brk{display:flex;align-items:center;gap:10px;padding:5px 13px;color:var(--dim);font-size:12px;font-family:"JetBrains Mono";text-transform:uppercase;letter-spacing:.5px}
+  .brk::before,.brk::after{content:"";height:1px;background:var(--line);flex:1}
+  .nowtag{margin-left:6px;font-family:"JetBrains Mono";font-size:10px;color:var(--bg);background:var(--magenta);padding:1px 6px;border-radius:20px;letter-spacing:.5px}
+
+  /* OVERVIEW */
+  .timeblock{font-family:"JetBrains Mono";font-weight:700;font-size:15px;color:var(--ink);margin-top:6px}
+  .timeblock .dur{color:var(--mut);font-weight:500}
+  .ov-title{font-family:"Bricolage Grotesque";font-weight:800;font-size:27px;line-height:1.05;letter-spacing:-.5px;margin:8px 0 14px}
+  .spk{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px}
+  .ava{width:74px;height:74px;border-radius:13px;object-fit:cover;background:var(--bg2);flex-shrink:0;border:1px solid var(--line)}
+  .ava.ph{display:flex;align-items:center;justify-content:center;font-family:"Bricolage Grotesque";font-weight:800;font-size:26px;color:var(--magenta)}
+  .spk .nm{font-family:"Bricolage Grotesque";font-weight:700;font-size:20px;line-height:1.05}
+  .spk .rl{font-size:13px;color:var(--mut);margin-top:3px;line-height:1.25}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .tag{font-size:11px;font-family:"JetBrains Mono";color:var(--mut);border:1px solid var(--line);border-radius:20px;padding:3px 9px}
+  .startbox{margin-top:auto;padding-top:14px}
+  .startlabel{font-size:12px;color:var(--dim);font-family:"JetBrains Mono";text-transform:uppercase;letter-spacing:1px}
+  .starttime{font-family:"JetBrains Mono";font-weight:700;font-size:40px;line-height:1;margin-top:4px;letter-spacing:-1px}
+  .starttime.live{color:var(--green)}
+  .starttime.soon{color:var(--amber)}
+  .starttime.done{color:var(--dim)}
+  .starttime .u{font-size:18px;font-weight:500;color:var(--mut);letter-spacing:0}
+  .startclock{font-family:"JetBrains Mono";font-size:14px;color:var(--mut);margin-top:6px}
+
+  /* ANMODERATION */
+  .anm-name{font-family:"Bricolage Grotesque";font-weight:700;font-size:18px;margin:8px 0 2px}
+  .anm-name span{color:var(--magenta)}
+  .script{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--magenta);border-radius:14px;padding:18px 19px;font-size:23px;line-height:1.55;margin-top:10px}
+  .script .sent{display:block;margin-bottom:9px}
+  .script .hand{display:block;margin-top:14px;color:var(--accent);font-weight:700;font-size:24px}
+  .anm-hint{margin-top:12px;font-size:12.5px;color:var(--mut);display:flex;gap:8px;align-items:flex-start;line-height:1.35}
+  .anm-hint b{color:var(--ink)}
+  .ttsbtn{display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Bricolage Grotesque";font-weight:700;font-size:15px;padding:11px 17px;border-radius:11px;cursor:pointer}
+  .ttsbtn:active{transform:scale(.98)}
+  .ttsbtn.on{background:var(--magenta);border-color:var(--magenta);color:#1a0010}
+  .ttsbtn:disabled{opacity:.5;cursor:default}
+
+  /* COUNTDOWN */
+  .cd-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px}
+  .cd-for{font-size:14px;color:var(--mut);max-width:90%}
+  .cd-for b{color:var(--ink)}
+  .cd-time{font-family:"JetBrains Mono";font-weight:700;font-size:23vw;line-height:.92;letter-spacing:-2px;color:var(--green);transition:color .3s;cursor:pointer}
+  .fstip{font-size:11px;color:var(--dim);font-family:"JetBrains Mono";letter-spacing:.5px;margin-top:2px}
+  /* fullscreen speaker timer */
+  .fs{position:fixed;inset:0;background:#04050a;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:60;cursor:pointer}
+  .fs.open{display:flex}
+  .fs .num{font-family:"JetBrains Mono";font-weight:700;line-height:.86;font-size:42vw;letter-spacing:-4px;color:var(--green)}
+  .fs .num.amber{color:var(--amber)}
+  .fs .num.red{color:var(--red)}
+  .fs .unit{font-family:"Bricolage Grotesque";font-weight:700;font-size:9vw;color:var(--mut);text-transform:uppercase;letter-spacing:6px;margin-top:1vw}
+  .fs .sub{font-family:"JetBrains Mono";font-size:8vw;color:var(--dim);margin-top:4vw}
+  .fs .hintc{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 16px);font-size:12px;color:#262c3b;font-family:"JetBrains Mono";letter-spacing:1px}
+  @media(min-width:520px){.fs .num{font-size:230px}.fs .unit{font-size:48px}.fs .sub{font-size:42px}}
+  @media(min-width:520px){.cd-time{font-size:120px}}
+  .cd-time.amber{color:var(--amber)}.cd-time.red{color:var(--red)}.cd-time.over{color:var(--red)}.cd-time.idle{color:var(--dim)}
+  .cd-state{font-family:"JetBrains Mono";font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);min-height:18px}
+  .cue{font-family:"JetBrains Mono";font-weight:700;font-size:14px;padding:6px 14px;border-radius:30px;margin-top:4px;min-height:0;opacity:0;transition:opacity .25s}
+  .cue.on{opacity:1}
+  .cue.c10{background:rgba(255,178,46,.15);color:var(--amber);border:1px solid var(--amber)}
+  .cue.c5{background:rgba(255,90,82,.15);color:var(--red);border:1px solid var(--red)}
+  .checklist{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+  .chk{font-size:12px;color:var(--mut);border:1px solid var(--line);background:var(--card);border-radius:20px;padding:6px 11px;cursor:pointer;transition:.12s}
+  .chk:active{transform:scale(.96)}
+  .chk.done{color:var(--green);border-color:var(--green);background:rgba(70,224,160,.08)}
+  .chk.done::before{content:"✓ "}
+  /* next-event footer */
+  .nextbar{margin-top:14px;border-top:1px solid var(--line);padding-top:11px}
+  .nextbar .lab{font-family:"JetBrains Mono";font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+  .nextbar .main{display:flex;align-items:baseline;gap:9px;margin-top:3px;flex-wrap:wrap}
+  .nextbar .when{font-family:"JetBrains Mono";font-weight:700;font-size:16px;color:#ffffff;background:#1e2433;border:1px solid #323a4f;padding:4px 10px;border-radius:8px}
+  .nextbar .when.brk{color:#fff;background:#7a1f4e;border-color:#a83a6e}
+  /* speaker links */
+  .links{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .lnk{font-size:12.5px;color:var(--accent);text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:9px;padding:6px 11px}
+  .lnk:active{transform:scale(.97)}
+  /* end-time shift */
+  .endshift{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;color:var(--mut);font-family:"JetBrains Mono"}
+  .endshift button{width:36px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:16px;cursor:pointer}
+  .endshift button:active{transform:scale(.95)}
+  .endshift .eff{color:var(--ink);font-weight:700}
+  .endshift .info{color:var(--amber)}
+  .nextbar .desc{font-size:14px;color:var(--ink)}
+  .nextbar .delta{font-family:"JetBrains Mono";font-size:12px;color:var(--mut)}
+  .nextbar .after{font-size:12.5px;color:var(--mut);margin-top:4px}
+
+  /* attendance */
+  .att{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--dim);font-family:"JetBrains Mono";text-transform:uppercase;letter-spacing:.5px}
+  .att .opt{border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer;color:var(--mut);letter-spacing:0;text-transform:none;font-size:12px}
+  .att .opt.sel{border-color:var(--accent);color:var(--accent);background:rgba(215,255,66,.07)}
+
+  /* nav */
+  .nav{display:flex;align-items:center;gap:10px;padding:10px 16px calc(env(safe-area-inset-bottom) + 12px)}
+  .nav button{flex:1;background:var(--card);border:1px solid var(--line);color:var(--ink);font-family:"Bricolage Grotesque";font-weight:700;font-size:15px;padding:13px;border-radius:13px;cursor:pointer;transition:.1s;display:flex;align-items:center;justify-content:center;gap:7px}
+  .nav button:active{transform:scale(.98)}
+  .nav button.prev{flex:0 0 56px;color:var(--mut)}
+  .nav button.next{background:linear-gradient(120deg,var(--magenta),#ff7ab8);border:none;color:#1a0010}
+  .nav button:disabled{opacity:.35}
+  .nav .home{flex:0 0 56px;background:var(--bg2);color:var(--mut)}
+
+  /* settings sheet */
+  .sheet{position:absolute;inset:0;background:rgba(6,7,11,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;z-index:30}
+  .sheet.open{display:flex}
+  .sheet .panel{width:100%;background:var(--bg2);border-top:1px solid var(--line);border-radius:20px 20px 0 0;padding:18px 20px calc(env(safe-area-inset-bottom) + 22px);box-shadow:var(--shadow)}
+  .sheet h3{font-family:"Bricolage Grotesque";font-size:18px;margin-bottom:4px}
+  .sheet p{font-size:13px;color:var(--mut);line-height:1.4;margin-bottom:14px}
+  .offset{display:flex;align-items:center;gap:12px;justify-content:center}
+  .offset button{width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:22px;font-family:"JetBrains Mono";cursor:pointer}
+  .offset .val{font-family:"JetBrains Mono";font-weight:700;font-size:26px;min-width:96px;text-align:center}
+  .offset .val small{display:block;font-size:11px;color:var(--dim);font-weight:500;letter-spacing:.5px}
+  .sheet .close{margin-top:16px;width:100%;padding:13px;border-radius:12px;border:none;background:var(--accent);color:#10130a;font-family:"Bricolage Grotesque";font-weight:700;font-size:15px;cursor:pointer}
+  .sheet .reset{margin-top:8px;width:100%;padding:11px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--mut);font-size:13px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">Berlin <b>Buzzwords</b> · Stage Host</div>
+    <button class="gear" id="gear" aria-label="Einstellungen">⚙</button>
+    <div class="clock" id="clock">--:--:--</div>
+  </div>
+  <div class="rail" id="rail"></div>
+  <div class="stage" id="stage"></div>
+  <div class="nav">
+    <button class="home" id="homeBtn" aria-label="Agenda">☰</button>
+    <button class="prev" id="prevBtn" aria-label="Zurück">‹</button>
+    <button class="next" id="nextBtn">Weiter ›</button>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="panel">
+      <h3>Programm-Versatz</h3>
+      <p>Standard ist die geplante Uhrzeit aus dem Schedule. Läuft das Programm vor oder nach, kannst du hier alle Countdowns verschieben.</p>
+      <div class="offset">
+        <button id="offMinus">−</button>
+        <div class="val"><span id="offVal">0</span> min<small id="offHint">nach Plan</small></div>
+        <button id="offPlus">+</button>
+      </div>
+      <button class="close" id="closeSheet">Fertig</button>
+      <button class="reset" id="resetState">Häkchen & Anwesenheit zurücksetzen</button>
+    </div>
+  </div>
+
+  <div class="fs" id="fs">
+    <div class="num" id="fsNum">–</div>
+    <div class="unit" id="fsUnit">min</div>
+    <div class="sub" id="fsSub"></div>
+    <div class="hintc">tippen zum Schließen</div>
+  </div>
+</div>
+
+<script>
+/* ---------- DATA (Frannz Salon · Dienstag, 9. Juni 2026) ---------- */
+const DAY = [2026,5,9]; // JS month 0-based -> Juni = 5
+const AV = "https://program.berlinbuzzwords.de/media/avatars/";
+
+const talks = [
+  { n:1, start:"09:30", end:"09:50", type:"Short Talk",
+    title:"Writes, 3 ways: Postgres, Apache Kafka\u00ae and Apache Iceberg\u2122",
+    speaker:"Celeste Horgan", role:"Sr. OSS Developer Advocate & OSPO Lead \u00b7 Snowflake",
+    tags:["Data Science","Scale","Store","Short Talk \u00b7 20 min"],
+    photo:AV+"KVW9PZ_xJNiKyO.webp",
+    url:"https://2026.berlinbuzzwords.de/session/writes-3-ways-postgres-apache-kafka-and-apache-iceberg/",
+    intro:`Good morning, everyone, and welcome to the Frannz Salon! Great to see you bright and early. The best way to learn something new is to compare it to something you already know. Our first speaker does exactly that. She will look at three popular data tools \u2014 Postgres, Apache Kafka, and Apache Iceberg \u2014 and how each one writes data. Along the way, we will see how data storage has changed over the years. She leads open source work at Snowflake.`,
+    hand:`Joining us from the open-source team at Snowflake, let's give a warm welcome to Celeste Horgan!`,
+    links:[{l:"LinkedIn",u:"https://www.linkedin.com/in/celeste-horgan/"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/celeste-horgan/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/writes-3-ways-postgres-apache-kafka-and-apache-iceberg/"}],
+    next:{kind:"talk", time:"10:00", desc:"Talk 2 \u00b7 Joao Gilberto Magalhaes", after:null} },
+
+  { n:2, start:"10:00", end:"10:40", type:"Talk",
+    title:"GitOps for n8n: Treating Workflows as Code",
+    speaker:"Joao Gilberto Magalhaes", role:"Software Developer & DevOps / Platform Engineer",
+    tags:["Operations","Scale","Talk \u00b7 40 min"],
+    photo:AV+"BNZBWR_Tmph8m6.webp",
+    url:"https://2026.berlinbuzzwords.de/session/gitops-for-n8n-treating-workflows-as-code/",
+    intro:`Welcome back. Many teams build automation workflows by clicking around in a tool, then copy them by hand between systems. That makes changes hard to track. Our next speaker built an open source tool to fix this. It brings \u201cGitOps\u201d to n8n: you keep your workflows in Git, review them, and deploy them safely. He will show it live, with rollbacks and real lessons. He is a software developer and platform engineer.`,
+    hand:`Straight from the world of platform engineering, the stage is yours, Joao Gilberto Magalhaes!`,
+    links:[{l:"LinkedIn",u:"https://linkedin.com/in/byjg"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/joao-gilberto-magalhaes/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/gitops-for-n8n-treating-workflows-as-code/"}],
+    next:{kind:"break", time:"10:40", desc:"Fr\u00fchst\u00fcckspause", brkEnd:"11:10",
+          after:{time:"11:10", desc:"Talk 3 \u00b7 Varant Zanoyan"}} },
+
+  { n:3, start:"11:10", end:"11:50", type:"Talk",
+    title:"Real-Time ML Pipelines: Feature Chaining with Chronon",
+    speaker:"Varant Zanoyan", role:"Co-Founder \u00b7 Zipline AI \u00b7 Chronon author",
+    tags:["Data Science","Search","Stream","Talk \u00b7 40 min"],
+    photo:AV+"EUZAP8_Epe70ar.webp",
+    url:"https://2026.berlinbuzzwords.de/session/real-time-ml-pipelines-feature-chaining-with-chronon/",
+    intro:`Our next talk is about speed. Modern machine learning needs fresh data in real time \u2014 often in less than a tenth of a second. That is very hard to do. Our speaker helped build Chronon, an open source platform made for exactly this. Using a search example, he will show how to mix embeddings with other data while keeping things fast. He spent more than ten years building data systems at Airbnb and Palantir, and now co-founded Zipline AI.`,
+    hand:`Coming to us from Zipline AI, over to you, Varant Zanoyan!`,
+    links:[{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/varant-zanoyan/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/real-time-ml-pipelines-feature-chaining-with-chronon/"}],
+    next:{kind:"talk", time:"12:00", desc:"Talk 4 \u00b7 Bartosz Mikulski", after:null} },
+
+  { n:4, start:"12:00", end:"12:40", type:"Talk",
+    title:"The Failures That Don't Crash: MLOps for AI Agents",
+    speaker:"Bartosz Mikulski", role:"Senior Data Engineer \u00b7 Start.io",
+    tags:["Data Science","Operations","Talk \u00b7 40 min"],
+    photo:AV+"FBBMGW_isrE4QY.webp",
+    url:"https://2026.berlinbuzzwords.de/session/the-failures-that-dont-crash-mlops-for-ai-agents/",
+    intro:`Welcome back from lunch! I hope you ate well. AI agents often fail in a quiet way: they give a confident answer that is simply wrong, and nothing crashes. Our next speaker takes four trusted ideas from large systems and shows how to use them with AI agents \u2014 like shadow testing and smarter circuit breakers. He is a Senior Data Engineer at Start.io and has written hundreds of articles on this topic.`,
+    hand:`All the way from Start.io, please give it up for Bartosz Mikulski!`,
+    links:[{l:"Blog",u:"https://mikulskibartosz.name"},{l:"LinkedIn",u:"https://www.linkedin.com/in/mikulskibartosz/"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/bartosz-mikulski/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/the-failures-that-dont-crash-mlops-for-ai-agents/"}],
+    next:{kind:"break", time:"12:40", desc:"Mittagspause", brkEnd:"14:00",
+          after:{time:"14:00", desc:"Talk 5 \u00b7 Apurva Misra"}} },
+
+  { n:5, start:"14:00", end:"14:40", type:"Talk",
+    title:"How to Tell If Your Agent Used the Right Stuff",
+    speaker:"Apurva Misra", role:"ML Engineer & Founder \u00b7 Sentick",
+    tags:["Data Science","Operations","Stories","Talk \u00b7 40 min"],
+    photo:AV+"H798FW_8wZ5nd6.webp",
+    url:"https://2026.berlinbuzzwords.de/session/how-to-tell-if-your-agent-used-the-right-stuff/",
+    intro:`Our next talk stays with AI agents. Many \u201cagent failures\u201d are really context problems in disguise: the agent never saw the right information. Our speaker will show how to check what your agent actually used \u2014 with tracing, good test sets, and small probe questions. That way you can measure quality, not just guess. She is a machine learning engineer and the founder of Sentick.`,
+    hand:`Joining us from Sentick, a big welcome for Apurva Misra!`,
+    links:[{l:"LinkedIn",u:"https://www.linkedin.com/in/misraapurva/"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/apurva-misra/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/how-to-tell-if-your-agent-used-the-right-stuff/"}],
+    next:{kind:"talk", time:"14:50", desc:"Talk 6 \u00b7 William Benton", after:null} },
+
+  { n:6, start:"14:50", end:"15:30", type:"Talk",
+    title:"Sunset for the Wild West: Making ML disciplined by default",
+    speaker:"William Benton", role:"Software Engineer \u00b7 NVIDIA",
+    tags:["Data Science","Operations","Scale","Talk \u00b7 40 min"],
+    photo:AV+"V7EF3R_GZC4FA0.webp",
+    url:"https://2026.berlinbuzzwords.de/session/sunset-for-the-wild-west-making-ml-disciplined-by-default/",
+    intro:`This is our last talk here in the Frannz Salon today. Many machine learning tricks start as clever hacks that just happen to work. But building real, reliable systems needs more order than that. Our last speaker shares an open source stack that helps both researchers and infrastructure teams \u2014 and shows their goals are closer than they think. He is a software engineer at NVIDIA.`,
+    hand:`Straight from the team at NVIDIA, let's hear it for William Benton!`,
+    links:[{l:"LinkedIn",u:"https://www.linkedin.com/in/willbenton/"},{l:"Fediverse",u:"https://fedi.freevariable.com/@willb"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/william-benton/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/sunset-for-the-wild-west-making-ml-disciplined-by-default/"}],
+    next:{kind:"break", time:"15:30", desc:"Kaffeepause", brkEnd:"16:00",
+          after:{time:"17:10", desc:"Closing Session \u00b7 Kesselhaus"}} },
+];
+
+/* ---------- time helpers ---------- */
+function hm(str){const [h,m]=str.split(":").map(Number);const d=new Date(DAY[0],DAY[1],DAY[2],h,m,0,0);return d;}
+let offsetMin = 0; // schedule offset
+function nowAdj(){ return new Date(Date.now() - offsetMin*60000); } // subtracting offset = "Programm läuft +X min später"
+function fmtClock(d){return d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit",second:"2-digit"});}
+function pad(n){return String(n).padStart(2,"0");}
+function fmtHM(d){return pad(d.getHours())+":"+pad(d.getMinutes());}
+function effEnd(t){return new Date(hm(t.end).getTime() + ((endShift[t.n]||0)*60000));}
+function diffParts(ms){const s=Math.max(0,Math.round(ms/1000));return {m:Math.floor(s/60),s:s%60,neg:ms<0};}
+
+/* ---------- state ---------- */
+let slides = [];           // flat list {talkIdx, kind}
+let cur = 0;
+const att = {};            // attendance per talk n
+const checks = {};         // checklist done per "n-key"
+const endShift = {};       // per-talk end-time shift in minutes
+let fsOpen = false;        // fullscreen speaker timer
+
+function buildSlides(){
+  slides = [{kind:"agenda"}];
+  talks.forEach((t,i)=>{
+    slides.push({kind:"overview",ti:i});
+    slides.push({kind:"anmod",ti:i});
+    slides.push({kind:"count",ti:i});
+  });
+}
+
+/* ---------- rendering ---------- */
+const stage=document.getElementById("stage");
+const rail=document.getElementById("rail");
+
+function render(){
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  // rail
+  rail.innerHTML="";
+  slides.forEach((s,i)=>{
+    const seg=document.createElement("div");
+    seg.className="seg"+(i<cur?" done":"")+(i===cur?" active":"");
+    rail.appendChild(seg);
+  });
+  // slide
+  const s=slides[cur];
+  let html="";
+  if(s.kind==="agenda") html=renderAgenda();
+  else if(s.kind==="overview") html=renderOverview(talks[s.ti]);
+  else if(s.kind==="anmod") html=renderAnmod(talks[s.ti]);
+  else if(s.kind==="count") html=renderCount(talks[s.ti]);
+  stage.innerHTML=`<div class="slide show">${html}</div>`;
+  bindSlide(s);
+  document.getElementById("prevBtn").disabled = cur===0;
+  const nb=document.getElementById("nextBtn");
+  nb.textContent = cur>=slides.length-1 ? "Ende" : "Weiter ›";
+  nb.disabled = cur>=slides.length-1;
+}
+
+function curState(){
+  const n=nowAdj();
+  // find current/next talk for agenda highlight
+  let idx=-1;
+  for(let i=0;i<talks.length;i++){
+    if(n < hm(talks[i].end)){ idx=i; break; }
+  }
+  return {n, liveIdx:idx};
+}
+
+function renderAgenda(){
+  const {n,liveIdx}=curState();
+  let rows="";
+  const breaksAfter={2:["Frühstückspause","10:40 – 11:10"],4:["Mittagspause","12:40 – 14:00"],6:["Kaffeepause","15:30 – 16:00"]};
+  talks.forEach((t,i)=>{
+    const isNow = (i===liveIdx);
+    const tag = isNow ? `<span class="nowtag">${n>=hm(t.start)?'LÄUFT':'GLEICH'}</span>` : "";
+    rows+=`<div class="row ${isNow?'now':''}" data-go="${1+i*3}">
+      <div class="t">${t.start}</div>
+      <div><div class="tt">${esc(t.title)}${tag}</div><div class="sp">${esc(t.speaker)}</div></div>
+      <div class="num">${t.n}</div></div>`;
+    if(breaksAfter[t.n]) rows+=`<div class="brk">${breaksAfter[t.n][0]} · ${breaksAfter[t.n][1]}</div>`;
+  });
+  rows+=`<div class="brk">Closing Session · 17:10 · Kesselhaus</div>`;
+  return `<div class="agenda">
+    <div class="kicker"><span class="pill">FRANNZ SALON</span> Dienstag · 9. Juni 2026</div>
+    <h1>Deine Talks heute</h1>
+    <div class="sub"><b>6 Sessions</b> · 09:30 – 15:30 · tippe einen Talk an</div>
+    <div class="list">${rows}</div>
+  </div>`;
+}
+
+function renderOverview(t){
+  return `<div class="kicker"><span class="pill">TALK ${t.n}/8</span> ${esc(t.type)}</div>
+    <div class="timeblock">${t.start} – ${t.end} <span class="dur">· Frannz Salon</span></div>
+    <div class="ov-title">${esc(t.title)}</div>
+    <div class="spk">
+      <img class="ava" src="${t.photo}" alt="${esc(t.speaker)}"
+           onerror="this.outerHTML='<div class=&quot;ava ph&quot;>${initials(t.speaker)}</div>'">
+      <div><div class="nm">${esc(t.speaker)}</div><div class="rl">${esc(t.role)}</div></div>
+    </div>
+    <div class="tags">${t.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>
+    <div class="links">${t.links.map(x=>`<a class="lnk" href="${x.u}" target="_blank" rel="noopener">${esc(x.l)} ↗</a>`).join("")}</div>
+    <div class="startbox">
+      <div class="startlabel" id="ovlab">beginnt in</div>
+      <div class="starttime" id="ovtime" data-start="${t.start}" data-end="${t.end}">– min</div>
+      <div class="startclock">${t.start} Uhr</div>
+    </div>`;
+}
+
+function renderAnmod(t){
+  return `<div class="kicker">Anmoderation · <span class="ph">Talk ${t.n}</span></div>
+    <div class="anm-name">${esc(t.title)} · <span>${esc(t.speaker)}</span></div>
+    <div class="script">${splitSentences(t.intro).map(x=>`<span class="sent">${esc(x)}</span>`).join("")}<span class="hand">${esc(t.hand)}</span></div>
+    <button class="ttsbtn" id="ttsBtn">🔊&nbsp;Vorlesen</button>
+    <div class="anm-hint">🎤 <span><b>Vor dem Talk:</b> Mikro beim Audio-Engineer abholen, Laptop an HDMI anschließen, fragen wie viel Zeit für Q&amp;A geplant ist (ist in der Session-Zeit enthalten).</span></div>`;
+}
+
+function renderCount(t){
+  const nx=t.next;
+  let whenCls = nx.kind==="break" ? "brk" : "";
+  let nextMain = `<span class="when ${whenCls}">${nx.time}</span><span class="desc">${esc(nx.desc)}${nx.brkEnd?` (bis ${nx.brkEnd})`:''}</span><span class="delta" id="nxdelta"></span>`;
+  let afterLine = nx.after ? `<div class="after">danach ${nx.after.time} · ${esc(nx.after.desc)}</div>` : "";
+  if(nx.kind==="event") afterLine = `<div class="after">Das war dein letzter Talk heute 🎉 — danke!</div>`;
+  const aSel=att[t.n]||"";
+  return `<div class="kicker">Restzeit · <span class="ph">Talk ${t.n}</span> · Ende geplant ${t.end}</div>
+    <div class="cd-wrap">
+      <div class="cd-for"><b>${esc(t.speaker)}</b> — ${esc(t.title)}</div>
+      <div class="cd-time" id="cdtime" data-start="${t.start}" data-end="${t.end}">--:--</div>
+      <div class="cd-state" id="cdstate"></div>
+      <div class="fstip">↗ auf die Zeit tippen = Vollbild für den Speaker</div>
+      <div class="cue" id="cue"></div>
+      <div class="checklist">
+        ${chk(t.n,"thank","Speaker gedankt")}
+        ${chk(t.n,"archive","Fragen archiviert")}
+      </div>
+      <div class="att">Auslastung:
+        <span class="opt ${aSel==='low'?'sel':''}" data-att="${t.n}" data-val="low">niedrig</span>
+        <span class="opt ${aSel==='med'?'sel':''}" data-att="${t.n}" data-val="med">mittel</span>
+        <span class="opt ${aSel==='full'?'sel':''}" data-att="${t.n}" data-val="full">voll</span>
+      </div>
+      <div class="endshift">Ende <span class="eff" id="effend">${t.end}</span>
+        <button data-endn="${t.n}" data-dir="-1" aria-label="Ende minus 1 Minute">−1</button>
+        <button data-endn="${t.n}" data-dir="1" aria-label="Ende plus 1 Minute">+1</button>
+        <span class="info" id="endinfo"></span>
+      </div>
+    </div>
+    <div class="nextbar">
+      <div class="lab">Als Nächstes</div>
+      <div class="main">${nextMain}</div>
+      ${afterLine}
+    </div>`;
+}
+function chk(n,key,label){const on=checks[n+"-"+key]?"done":"";return `<span class="chk ${on}" data-chk="${n}-${key}">${esc(label)}</span>`;}
+
+/* ---------- live ticking ---------- */
+function updateFs(t,st,en,n){
+  const num=document.getElementById("fsNum"),unit=document.getElementById("fsUnit"),sub=document.getElementById("fsSub");
+  if(!num) return;
+  num.className="num";
+  const rem=(n<st)?(en-st):(en-n);
+  if(rem>0){
+    const mins=Math.ceil(rem/60000),p=diffParts(rem);
+    num.textContent=mins; unit.textContent="min"; sub.textContent=`${pad(p.m)}:${pad(p.s)}`;
+    if(n>=st){const ml=rem/60000; if(ml<=5)num.classList.add("red"); else if(ml<=10)num.classList.add("amber");}
+  } else {
+    const o=diffParts(n-en);
+    num.textContent="0"; num.classList.add("red"); unit.textContent="min"; sub.textContent=`+${pad(o.m)}:${pad(o.s)} über`;
+  }
+}
+
+function resetTtsBtn(btn){if(btn){btn.classList.remove("on");btn.innerHTML="🔊&nbsp;Vorlesen";}}
+function toggleTts(t,btn){
+  const synth=window.speechSynthesis;
+  if(!synth){btn.textContent="🔇 nicht verfügbar";btn.disabled=true;return;}
+  if(synth.speaking){synth.cancel();resetTtsBtn(btn);return;}
+  const u=new SpeechSynthesisUtterance(t.intro+"  "+t.hand);
+  u.lang="en-US";u.rate=0.95;u.pitch=1;
+  const v=synth.getVoices().find(x=>/^en[-_]/i.test(x.lang)||x.lang==="en");
+  if(v)u.voice=v;
+  u.onend=()=>resetTtsBtn(btn);
+  u.onerror=()=>resetTtsBtn(btn);
+  btn.classList.add("on");btn.innerHTML="⏹&nbsp;Stopp";
+  synth.cancel();synth.speak(u);
+}
+
+function tick(){
+  document.getElementById("clock").textContent=fmtClock(new Date());
+  const s=slides[cur];
+  const n=nowAdj();
+  if(s.kind==="overview"){
+    const t=talks[s.ti];
+    const el=document.getElementById("ovtime"), lab=document.getElementById("ovlab");
+    if(el){
+      const st=hm(t.start), en=effEnd(t);
+      el.className="starttime";
+      if(n<st){const mins=Math.ceil((st-n)/60000);el.innerHTML=`${mins}<span class="u"> min</span>`;el.classList.add("soon");lab.textContent="beginnt in";}
+      else if(n<en){const mins=Math.ceil((en-n)/60000);el.innerHTML=`${mins}<span class="u"> min</span>`;el.classList.add("live");lab.textContent="läuft · noch";}
+      else{el.textContent="beendet";el.classList.add("done");lab.textContent="abgeschlossen";}
+    }
+  }
+  if(s.kind==="count"){
+    const t=talks[s.ti];
+    const el=document.getElementById("cdtime");
+    if(el){
+      const st=hm(t.start), en=effEnd(t), sh=endShift[t.n]||0;
+      const state=document.getElementById("cdstate"), cue=document.getElementById("cue");
+      const ee=document.getElementById("effend"); if(ee) ee.textContent=fmtHM(en);
+      const ei=document.getElementById("endinfo"); if(ei) ei.textContent= sh!==0?`(${sh>0?'+':''}${sh} min)`:"";
+      el.className="cd-time";cue.className="cue";
+      if(n<st){
+        const ps=diffParts(st-n);
+        el.textContent=`${pad(diffParts(en-st).m)}:00`;el.classList.add("idle");
+        state.textContent=`Talk startet in ${pad(ps.m)}:${pad(ps.s)} (Plan)`;
+      } else if(n<en){
+        const left=en-n;const p=diffParts(left);
+        el.textContent=`${pad(p.m)}:${pad(p.s)}`;
+        const minLeft=left/60000;
+        if(minLeft<=5){el.classList.add("red");cue.classList.add("on","c5");cue.textContent="🟥 5-Min-Karte zeigen";}
+        else if(minLeft<=10){el.classList.add("amber");cue.classList.add("on","c10");cue.textContent="🟧 10-Min-Karte zeigen";}
+        state.textContent="verbleibend";
+      } else {
+        const over=diffParts(n-en);
+        el.textContent=`+${pad(over.m)}:${pad(over.s)}`;el.classList.add("over");
+        state.textContent="ÜBER PLAN · bitte zum Schluss kommen";
+        cue.classList.add("on","c5");cue.textContent="🔴 Session beenden & Speaker danken";
+      }
+      const dxEl=document.getElementById("nxdelta");
+      if(dxEl){const nx=t.next;const d=Math.round((hm(nx.time)-en)/60000);dxEl.textContent= d>=0?`+${d} Min nach Talk-Ende`:`${d} Min – Überschneidung`;}
+      if(fsOpen) updateFs(t,st,en,n);
+    }
+  }
+}
+
+/* ---------- interactions ---------- */
+function bindSlide(s){
+  stage.querySelectorAll("[data-go]").forEach(el=>el.onclick=()=>{cur=+el.dataset.go;render();});
+  stage.querySelectorAll("[data-chk]").forEach(el=>el.onclick=()=>{const k=el.dataset.chk;checks[k]=!checks[k];el.classList.toggle("done");});
+  stage.querySelectorAll("[data-att]").forEach(el=>el.onclick=()=>{
+    const n=el.dataset.att; att[n]=el.dataset.val;
+    el.parentElement.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel"));el.classList.add("sel");
+  });
+  stage.querySelectorAll("[data-endn]").forEach(el=>el.onclick=()=>{
+    const k=el.dataset.endn; endShift[k]=(endShift[k]||0)+parseInt(el.dataset.dir,10); tick();
+  });
+  const cdt=document.getElementById("cdtime"); if(cdt) cdt.onclick=()=>toggleFs(true);
+  const ttsBtn=document.getElementById("ttsBtn"); if(ttsBtn){const t=talks[s.ti]; ttsBtn.onclick=()=>toggleTts(t,ttsBtn);}
+  tick();
+}
+function go(d){if(fsOpen)return;const t=cur+d;if(t>=0&&t<slides.length){cur=t;render();}}
+document.getElementById("nextBtn").onclick=()=>go(1);
+document.getElementById("prevBtn").onclick=()=>go(-1);
+document.getElementById("homeBtn").onclick=()=>{cur=0;render();};
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&fsOpen){toggleFs(false);return;}
+  if(fsOpen)return;
+  if(e.key==="ArrowRight")go(1);
+  else if(e.key==="ArrowLeft")go(-1);
+  else if(e.key==="ArrowUp"){cur=0;render();}
+});
+// swipe
+let sx=0;
+stage.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true});
+stage.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>55)go(dx<0?1:-1);},{passive:true});
+
+/* settings */
+const sheet=document.getElementById("sheet");
+const fs=document.getElementById("fs");
+function toggleFs(v){fsOpen=(v===undefined)?!fsOpen:v;fs.classList.toggle("open",fsOpen);if(fsOpen)tick();}
+fs.onclick=()=>toggleFs(false);
+document.getElementById("gear").onclick=()=>sheet.classList.add("open");
+document.getElementById("closeSheet").onclick=()=>sheet.classList.remove("open");
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove("open");};
+function setOff(v){offsetMin=v;document.getElementById("offVal").textContent=(v>0?"+":"")+v;
+  document.getElementById("offHint").textContent = v===0?"nach Plan":(v>0?"Programm läuft später":"Programm läuft früher");}
+document.getElementById("offPlus").onclick=()=>setOff(offsetMin+1);
+document.getElementById("offMinus").onclick=()=>setOff(offsetMin-1);
+document.getElementById("resetState").onclick=()=>{for(const k in checks)delete checks[k];for(const k in att)delete att[k];for(const k in endShift)delete endShift[k];setOff(0);render();sheet.classList.remove("open");};
+
+/* helpers */
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function splitSentences(txt){const m=txt.match(/[^.!?]+[.!?]+["”’']*/g);return m?m.map(s=>s.trim()):[txt];}
+function initials(name){return name.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();}
+
+/* boot */
+buildSlides();
+render();
+setInterval(tick,1000);
+tick();
+</script>
+</body>
+</html>
