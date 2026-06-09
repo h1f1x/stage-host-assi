@@ -338,6 +338,13 @@
   #flash.on5{background:var(--red);animation:flashBlink .34s steps(1,end) 0s 24 both}
   @keyframes flashBlink{0%{opacity:0}50%{opacity:.92}100%{opacity:0}}
 
+  /* settings test buttons */
+  .sheet .testrow{display:flex;gap:8px;margin-top:12px}
+  .sheet .testrow button{flex:1;padding:11px;border-radius:12px;border:1px solid var(--line2);background:linear-gradient(180deg,var(--card2),var(--card));color:var(--ink);font-family:"JetBrains Mono";font-weight:700;font-size:12.5px;cursor:pointer;transition:transform .08s}
+  .sheet .testrow button:active{transform:scale(.97)}
+  .sheet .testrow #test10{border-color:var(--amber);color:var(--amber)}
+  .sheet .testrow #test5{border-color:var(--red);color:var(--red)}
+
   /* respect reduced-motion — also suppresses the strobe for photosensitivity */
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -369,6 +376,10 @@
         <button id="offMinus">−</button>
         <div class="val"><span id="offVal">0</span> min<small id="offHint">nach Plan</small></div>
         <button id="offPlus">+</button>
+      </div>
+      <div class="testrow">
+        <button id="test10">▶ Test 10-Min</button>
+        <button id="test5">▶ Test 5-Min</button>
       </div>
       <button class="close" id="closeSheet">Fertig</button>
       <button class="reset" id="resetState">Häkchen & Anwesenheit zurücksetzen</button>
@@ -798,6 +809,10 @@ function checkAlerts(){
   });
 }
 setInterval(checkAlerts,1000);
+
+// quick-test buttons in the settings sheet (click is a valid audio gesture)
+document.getElementById("test10").onclick=()=>{unlockAudio();fireAlert(10);};
+document.getElementById("test5").onclick=()=>{unlockAudio();fireAlert(5);};
 
 /* boot */
 buildSlides();
