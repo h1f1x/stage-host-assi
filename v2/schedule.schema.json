@@ -23,8 +23,8 @@
     },
     "talks": {
       "type": "array",
-      "minItems": 1,
-      "description": "Talks in chronological order.",
+      "minItems": 0,
+      "description": "Talks in chronological order. A usable schedule has at least one; an empty array renders an \"add programme\" placeholder.",
       "items": {
         "type": "object",
         "required": ["start", "end", "type", "title", "speaker", "intro", "hand"],

@@ -27,6 +27,11 @@
 
   <div class="sheet" id="sheet">
     <div class="panel">
+      <div class="schedwrap" id="schedWrap">
+        <h3>Bühne &amp; Tag</h3>
+        <p>Welches Programm möchtest du hosten?</p>
+        <select id="schedSel" class="schedsel" aria-label="Schedule wählen"></select>
+      </div>
       <h3>Programm-Versatz</h3>
       <p>Standard ist die geplante Uhrzeit aus dem Schedule. Läuft das Programm vor oder nach, kannst du hier alle Countdowns verschieben.</p>
       <div class="offset">
@@ -176,10 +181,14 @@ function renderAgenda(){
   });
   if(CLOSING) rows+=`<div class="brk">${esc(CLOSING.label)} · ${CLOSING.time} · ${esc(CLOSING.room)}</div>`;
   const count=talks.length, range=count?`${talks[0].start} – ${talks[count-1].end}`:"";
+  const sub = count ? `<b>${count} Sessions</b> · ${range} · tippe einen Talk an` : `Noch kein Programm hinterlegt`;
+  const note = count ? "" :
+    `<div class="anm-hint" style="margin-top:6px">📝 <span>Programm in <b>${esc(scheduleFile())}</b> eintragen — siehe <b>SCHEMA.md</b> (inkl. LLM-Prompt).</span></div>`;
   return `<div class="agenda">
     <div class="kicker"><span class="pill">${esc((META.room||"").toUpperCase())}</span> ${esc(META.dayLabel||"")}</div>
     <h1>${esc(META.agendaTitle||"Deine Talks heute")}</h1>
-    <div class="sub"><b>${count} Sessions</b> · ${range} · tippe einen Talk an</div>
+    <div class="sub">${sub}</div>
+    ${note}
     <div class="list">${rows}</div>
   </div>`;
 }
@@ -452,7 +461,24 @@ document.getElementById("test5").onclick=()=>{unlockAudio();fireAlert(5);};
 function scheduleFile(){
   return new URLSearchParams(location.search).get("data") || "data/frannz-salon-2026-06-09.json";
 }
+// populate the settings chooser from data/index.json (list of available schedules)
+async function loadScheduleMenu(){
+  const sel=document.getElementById("schedSel"), wrap=document.getElementById("schedWrap");
+  if(!sel) return;
+  try{
+    const res=await fetch("data/index.json",{cache:"no-cache"});
+    if(!res.ok) throw new Error();
+    const list=(await res.json()).schedules||[];
+    if(!list.length) throw new Error();
+    const cur=scheduleFile();
+    sel.innerHTML=list.map(s=>`<option value="${esc(s.file)}"${s.file===cur?" selected":""}>${esc(s.label)}</option>`).join("");
+    sel.onchange=()=>{ const p=new URLSearchParams(location.search); p.set("data",sel.value); location.search=p.toString(); };
+  }catch(e){
+    if(wrap) wrap.style.display="none";   // no manifest → hide the chooser
+  }
+}
 async function boot(){
+  loadScheduleMenu();
   const file=scheduleFile();
   try{
     const res=await fetch(file,{cache:"no-cache"});

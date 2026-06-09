@@ -1,0 +1,14 @@
+{
+  "$schema": "../schedule.schema.json",
+  "meta": {
+    "event": "Berlin Buzzwords",
+    "room": "Maschinenhaus",
+    "date": "2026-06-09",
+    "dayLabel": "Dienstag · 9. Juni 2026",
+    "agendaTitle": "Deine Talks heute",
+    "avatarBase": "https://program.berlinbuzzwords.de/media/avatars/"
+  },
+  "talks": [],
+  "breaks": [],
+  "closing": { "label": "Closing Session", "time": "17:10", "room": "Kesselhaus" }
+}
