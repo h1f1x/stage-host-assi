@@ -1,0 +1,248 @@
+{
+  "$schema": "../schedule.schema.json",
+  "meta": {
+    "event": "Berlin Buzzwords",
+    "room": "Kesselhaus",
+    "date": "2026-06-09",
+    "dayLabel": "Dienstag · 9. Juni 2026",
+    "agendaTitle": "Deine Talks heute",
+    "avatarBase": "https://program.berlinbuzzwords.de/media/avatars/"
+  },
+  "talks": [
+    {
+      "n": 1,
+      "start": "09:30",
+      "end": "09:50",
+      "type": "Short Talk",
+      "title": "Reviving phonetic algorithms for better search relevance",
+      "speaker": "Pietro Mele, Radu Pop",
+      "role": "INA — Institut national de l'audiovisuel",
+      "tags": [
+        "Search",
+        "Short Talk · 20 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/CQLPDE_dwRmDMi.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/reviving-phonetic-algorithms-for-better-search-relevance/",
+      "intro": "Good morning, everyone, and welcome to the first talk in this room. When you misspell a search, fuzzy matching usually saves you — but on a huge archive it also drags in a flood of junk. Pietro and Radu went back to old phonetic algorithms that match words by how they sound, not how they're spelled. They'll compare the two approaches on a massive French media archive. Pietro works on search at INA, France's national audiovisual institute, so this is tested at real scale.",
+      "hand": "Let's hear why 'sounding right' beats 'spelling close' — please welcome Pietro Mele and Radu Pop!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/pietro-mele/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/radu-pop/"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "type": "Talk",
+      "title": "From Inverted Index to Columnar Vectorized Execution Search",
+      "speaker": "Ankit Jain",
+      "role": "Software Engineer · Amazon OpenSearch Service",
+      "tags": [
+        "Scale",
+        "Search",
+        "Stream",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/EJMU7A_UThCmzc.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/from-inverted-index-to-columnar-vectorized-execution-search/",
+      "intro": "Welcome back. Search engines and analytics databases are slowly becoming the same thing. Ankit will explain how ideas from columnar databases — laying data out in columns and using the CPU's fast vector instructions — are reshaping how search works inside. He'll show where the classic inverted index runs out of road. Ankit is a software engineer on Amazon's OpenSearch team and a committer on Apache Lucene, so he knows these internals firsthand.",
+      "hand": "Time to look under the hood of modern search — please welcome Ankit Jain!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/ankit-jain/"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "start": "11:10",
+      "end": "11:50",
+      "type": "Talk",
+      "title": "When better retrieval makes agents worse",
+      "speaker": "Lester Solbakken",
+      "role": "Founding Engineer · HORNET.dev",
+      "tags": [
+        "Data Science",
+        "Search",
+        "Stories",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/EJLRPN_O4r96yT.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/when-better-retrieval-makes-agents-worse/",
+      "intro": "Welcome, everyone. Here's a surprising idea: making your search better can sometimes make your AI agent worse. The reason is that convincing-but-wrong information gets pulled in and acted on, and the mistakes pile up across each step. Lester will break down how this happens and share patterns to keep agents honest — like checking they have enough evidence before acting. He's a founding engineer at Hornet, where he builds retrieval systems for exactly these AI agents.",
+      "hand": "Let's see why smarter search can backfire — please welcome Lester Solbakken!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/lester-solbakken/"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "start": "12:00",
+      "end": "12:40",
+      "type": "Talk",
+      "title": "Keeping data private in real-time pipelines",
+      "speaker": "Olena Kutsenko",
+      "role": "Staff Developer Advocate · Confluent",
+      "tags": [
+        "Operations",
+        "Store",
+        "Stream",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/LLBXBT_Q3Gez1v.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/keeping-data-private-in-real-time-pipelines/",
+      "intro": "Welcome back. Real-time data is great, until you realise it's quietly carrying names, emails, and locations you shouldn't be leaking. Olena will show practical ways to keep streaming data both useful and safe, from simple masking to tricks that beat re-identification. Expect live demos and some real-world horror stories. Olena is a staff developer advocate at Confluent with two decades in software and data streaming.",
+      "hand": "Let's keep that streaming data private — please welcome Olena Kutsenko!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/olena-kutsenko/"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "start": "14:00",
+      "end": "14:40",
+      "type": "Talk",
+      "title": "The Three-Body Problem of Inverse Hybrid Search",
+      "speaker": "Ravindra Harige",
+      "role": "Founder · Searchplex",
+      "tags": [
+        "Search",
+        "Stream",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/WSF7G8_UYfRAu0.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/the-three-body-problem-of-inverse-hybrid-search/",
+      "intro": "Welcome, everyone. Think about a saved search that alerts you the moment a matching product appears — like uploading a photo and being told when something similar shows up. That flips search on its head: now the documents trigger the queries, and you can't afford to miss a single match. Ravindra will explain why this 'inverse' search breaks the usual scaling assumptions, and how to reason about it. He's the founder of Searchplex, which designs AI-native search systems.",
+      "hand": "Let's tackle search turned inside out — please welcome Ravindra Harige!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/ravindra-harige/"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "start": "14:50",
+      "end": "15:30",
+      "type": "Talk",
+      "title": "Beyond Grep: Search for Reliable Coding Agents",
+      "speaker": "Amine GANI, Roudy Khoury",
+      "role": "Search Consultant · Adelean",
+      "tags": [
+        "Scale",
+        "Search",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/WXFDZU_nbX62Jl.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/beyond-grep-search-for-reliable-coding-agents/",
+      "intro": "Welcome back. Coding agents do well when there's a compiler and tests to check their work, but they stumble in big codebases where they can't find the right context. Amine and Roudy will look at how different kinds of search — keyword, structural, and semantic — can feed cleaner context to the agent without blowing up the token bill. There'll be a live demo. Amine is a search consultant at Adelean who specialises in Elasticsearch and OpenSearch.",
+      "hand": "Let's give coding agents better search — please welcome Amine Gani and Roudy Khoury!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/amine-gani/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/roudy-khoury/"
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "start": "16:00",
+      "end": "16:40",
+      "type": "Talk",
+      "title": "Correctness Too Cheap To Meter: Formal Verification and LLMs",
+      "speaker": "Emilie Ma",
+      "role": "Researcher · University of British Columbia",
+      "tags": [
+        "Operations",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/NXGVAY_rMuYGto.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/correctness-too-cheap-to-meter-formal-verification-and-llms/",
+      "intro": "Welcome, everyone. Formal verification can mathematically prove that software won't crash or deadlock — but writing those proofs by hand is slow and expensive, so almost no one does it. Emilie will show how language models can take on much of that grunt work, and share honest results on where they help and where they fall short. Expect new, unpublished research, not hype. Emilie is a researcher at the University of British Columbia who has worked on systems and security at OpenAI and Stripe.",
+      "hand": "Let's make proving software correct affordable — please welcome Emilie Ma!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/emilie-ma/"
+        },
+        {
+          "l": "Blog",
+          "u": "https://emilie.ma"
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "start": "16:50",
+      "end": "17:10",
+      "type": "Short Talk",
+      "title": "From Legacy Search to Vespa: What a Real PoC Taught Us",
+      "speaker": "André Charton, Valeriia Platonova",
+      "role": "Search Engineer · Classifieds (15+ yrs)",
+      "tags": [
+        "Data Science",
+        "Scale",
+        "Search",
+        "Short Talk · 20 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/8C93V9_s499VuK.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/from-legacy-search-to-vespa-what-a-real-poc-taught-us/",
+      "intro": "Welcome to the last talk in this room. Germany's largest classifieds site leaned on a search-first approach for years because their data was messy and sparse. André and Valeriia will share how they moved to Vespa, starting with the Motors category, and enriched things with embeddings and attributes pulled from free text. Best of all, they'll be honest about what broke under real traffic. André has more than fifteen years building search for classifieds.",
+      "hand": "Let's hear what a real proof-of-concept taught them — please welcome André Charton and Valeriia Platonova!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/andre-charton/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/valeriia-platonova/"
+        }
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "afterTalk": 2,
+      "name": "Breakfast Break",
+      "start": "10:40",
+      "end": "11:10"
+    },
+    {
+      "afterTalk": 4,
+      "name": "Lunch Break",
+      "start": "12:40",
+      "end": "14:00"
+    },
+    {
+      "afterTalk": 6,
+      "name": "Coffee Break",
+      "start": "15:30",
+      "end": "16:00"
+    }
+  ],
+  "closing": {
+    "label": "Closing Session",
+    "time": "17:10",
+    "room": "Kesselhaus"
+  }
+}
