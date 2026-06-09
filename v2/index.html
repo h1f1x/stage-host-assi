@@ -52,80 +52,49 @@
 </div>
 
 <script>
-/* ---------- DATA (Frannz Salon · Dienstag, 9. Juni 2026) ---------- */
-const DAY = [2026,5,9]; // JS month 0-based -> Juni = 5
-const AV = "https://program.berlinbuzzwords.de/media/avatars/";
+/* ---------- schedule data (loaded at runtime from a JSON file) ----------
+   Content lives in v2/data/*.json — see SCHEMA.md for the format.
+   Choose a schedule via the URL:  ?data=data/<file>.json
+   (default: Frannz Salon · Tue 9 Jun 2026). */
+let talks   = [];      // per-talk objects (see schema); each t.next is derived below
+let BREAKS  = [];      // [{ afterTalk, name, start, end }]
+let CLOSING = null;    // { label, time, room }
+let META    = {};      // { event, room, date, dayLabel, agendaTitle, avatarBase }
+let DAY     = [2026,5,9]; // [year, month0-based, day] — derived from meta.date
+let AV      = "";         // avatar base url — from meta.avatarBase
 
-const talks = [
-  { n:1, start:"09:30", end:"09:50", type:"Short Talk",
-    title:"Writes, 3 ways: Postgres, Apache Kafka\u00ae and Apache Iceberg\u2122",
-    speaker:"Celeste Horgan", role:"Sr. OSS Developer Advocate & OSPO Lead \u00b7 Snowflake",
-    tags:["Data Science","Scale","Store","Short Talk \u00b7 20 min"],
-    photo:AV+"KVW9PZ_xJNiKyO.webp",
-    url:"https://2026.berlinbuzzwords.de/session/writes-3-ways-postgres-apache-kafka-and-apache-iceberg/",
-    intro:`Good morning, everyone, and welcome to the Frannz Salon! Great to see you bright and early. The best way to learn something new is to compare it to something you already know. Our first speaker does exactly that. She will look at three popular data tools \u2014 Postgres, Apache Kafka, and Apache Iceberg \u2014 and how each one writes data. Along the way, we will see how data storage has changed over the years. She leads open source work at Snowflake.`,
-    hand:`Joining us from the open-source team at Snowflake, let's give a warm welcome to Celeste Horgan!`,
-    links:[{l:"LinkedIn",u:"https://www.linkedin.com/in/celeste-horgan/"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/celeste-horgan/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/writes-3-ways-postgres-apache-kafka-and-apache-iceberg/"}],
-    next:{kind:"talk", time:"10:00", desc:"Talk 2 \u00b7 Joao Gilberto Magalhaes", after:null} },
+function parseDate(s){ const [y,m,d]=String(s).split("-").map(Number); return [y,(m||1)-1,d||1]; }
 
-  { n:2, start:"10:00", end:"10:40", type:"Talk",
-    title:"GitOps for n8n: Treating Workflows as Code",
-    speaker:"Joao Gilberto Magalhaes", role:"Software Developer & DevOps / Platform Engineer",
-    tags:["Operations","Scale","Talk \u00b7 40 min"],
-    photo:AV+"BNZBWR_Tmph8m6.webp",
-    url:"https://2026.berlinbuzzwords.de/session/gitops-for-n8n-treating-workflows-as-code/",
-    intro:`Welcome back. Many teams build automation workflows by clicking around in a tool, then copy them by hand between systems. That makes changes hard to track. Our next speaker built an open source tool to fix this. It brings \u201cGitOps\u201d to n8n: you keep your workflows in Git, review them, and deploy them safely. He will show it live, with rollbacks and real lessons. He is a software developer and platform engineer.`,
-    hand:`Straight from the world of platform engineering, the stage is yours, Joao Gilberto Magalhaes!`,
-    links:[{l:"LinkedIn",u:"https://linkedin.com/in/byjg"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/joao-gilberto-magalhaes/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/gitops-for-n8n-treating-workflows-as-code/"}],
-    next:{kind:"break", time:"10:40", desc:"Fr\u00fchst\u00fcckspause", brkEnd:"11:10",
-          after:{time:"11:10", desc:"Talk 3 \u00b7 Varant Zanoyan"}} },
+// derive each talk's "next" pointer (next talk / break / closing) from the ordered schedule
+function buildNext(){
+  talks.forEach((t,i)=>{
+    const nextTalk  = talks[i+1] || null;
+    const afterTalk = nextTalk ? {time:nextTalk.start, desc:`Talk ${nextTalk.n} · ${nextTalk.speaker}`} : null;
+    const afterClose= CLOSING  ? {time:CLOSING.time,  desc:`${CLOSING.label} · ${CLOSING.room}`} : null;
+    const brk = BREAKS.find(b=>b.afterTalk===t.n);
+    if(brk){
+      t.next = {kind:"break", time:brk.start, desc:brk.name, brkEnd:brk.end, after: afterTalk||afterClose};
+    } else if(nextTalk){
+      t.next = {kind:"talk", time:nextTalk.start, desc:`Talk ${nextTalk.n} · ${nextTalk.speaker}`, after:null};
+    } else {
+      t.next = {kind:"event", time:(CLOSING?CLOSING.time:t.end), desc:(afterClose?afterClose.desc:""), after:null};
+    }
+  });
+}
 
-  { n:3, start:"11:10", end:"11:50", type:"Talk",
-    title:"Real-Time ML Pipelines: Feature Chaining with Chronon",
-    speaker:"Varant Zanoyan", role:"Co-Founder \u00b7 Zipline AI \u00b7 Chronon author",
-    tags:["Data Science","Search","Stream","Talk \u00b7 40 min"],
-    photo:AV+"EUZAP8_Epe70ar.webp",
-    url:"https://2026.berlinbuzzwords.de/session/real-time-ml-pipelines-feature-chaining-with-chronon/",
-    intro:`Our next talk is about speed. Modern machine learning needs fresh data in real time \u2014 often in less than a tenth of a second. That is very hard to do. Our speaker helped build Chronon, an open source platform made for exactly this. Using a search example, he will show how to mix embeddings with other data while keeping things fast. He spent more than ten years building data systems at Airbnb and Palantir, and now co-founded Zipline AI.`,
-    hand:`Coming to us from Zipline AI, over to you, Varant Zanoyan!`,
-    links:[{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/varant-zanoyan/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/real-time-ml-pipelines-feature-chaining-with-chronon/"}],
-    next:{kind:"talk", time:"12:00", desc:"Talk 4 \u00b7 Bartosz Mikulski", after:null} },
-
-  { n:4, start:"12:00", end:"12:40", type:"Talk",
-    title:"The Failures That Don't Crash: MLOps for AI Agents",
-    speaker:"Bartosz Mikulski", role:"Senior Data Engineer \u00b7 Start.io",
-    tags:["Data Science","Operations","Talk \u00b7 40 min"],
-    photo:AV+"FBBMGW_isrE4QY.webp",
-    url:"https://2026.berlinbuzzwords.de/session/the-failures-that-dont-crash-mlops-for-ai-agents/",
-    intro:`Welcome back from lunch! I hope you ate well. AI agents often fail in a quiet way: they give a confident answer that is simply wrong, and nothing crashes. Our next speaker takes four trusted ideas from large systems and shows how to use them with AI agents \u2014 like shadow testing and smarter circuit breakers. He is a Senior Data Engineer at Start.io and has written hundreds of articles on this topic.`,
-    hand:`All the way from Start.io, please give it up for Bartosz Mikulski!`,
-    links:[{l:"Blog",u:"https://mikulskibartosz.name"},{l:"LinkedIn",u:"https://www.linkedin.com/in/mikulskibartosz/"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/bartosz-mikulski/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/the-failures-that-dont-crash-mlops-for-ai-agents/"}],
-    next:{kind:"break", time:"12:40", desc:"Mittagspause", brkEnd:"14:00",
-          after:{time:"14:00", desc:"Talk 5 \u00b7 Apurva Misra"}} },
-
-  { n:5, start:"14:00", end:"14:40", type:"Talk",
-    title:"How to Tell If Your Agent Used the Right Stuff",
-    speaker:"Apurva Misra", role:"ML Engineer & Founder \u00b7 Sentick",
-    tags:["Data Science","Operations","Stories","Talk \u00b7 40 min"],
-    photo:AV+"H798FW_8wZ5nd6.webp",
-    url:"https://2026.berlinbuzzwords.de/session/how-to-tell-if-your-agent-used-the-right-stuff/",
-    intro:`Our next talk stays with AI agents. Many \u201cagent failures\u201d are really context problems in disguise: the agent never saw the right information. Our speaker will show how to check what your agent actually used \u2014 with tracing, good test sets, and small probe questions. That way you can measure quality, not just guess. She is a machine learning engineer and the founder of Sentick.`,
-    hand:`Joining us from Sentick, a big welcome for Apurva Misra!`,
-    links:[{l:"LinkedIn",u:"https://www.linkedin.com/in/misraapurva/"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/apurva-misra/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/how-to-tell-if-your-agent-used-the-right-stuff/"}],
-    next:{kind:"talk", time:"14:50", desc:"Talk 6 \u00b7 William Benton", after:null} },
-
-  { n:6, start:"14:50", end:"15:30", type:"Talk",
-    title:"Sunset for the Wild West: Making ML disciplined by default",
-    speaker:"William Benton", role:"Software Engineer \u00b7 NVIDIA",
-    tags:["Data Science","Operations","Scale","Talk \u00b7 40 min"],
-    photo:AV+"V7EF3R_GZC4FA0.webp",
-    url:"https://2026.berlinbuzzwords.de/session/sunset-for-the-wild-west-making-ml-disciplined-by-default/",
-    intro:`This is our last talk here in the Frannz Salon today. Many machine learning tricks start as clever hacks that just happen to work. But building real, reliable systems needs more order than that. Our last speaker shares an open source stack that helps both researchers and infrastructure teams \u2014 and shows their goals are closer than they think. He is a software engineer at NVIDIA.`,
-    hand:`Straight from the team at NVIDIA, let's hear it for William Benton!`,
-    links:[{l:"LinkedIn",u:"https://www.linkedin.com/in/willbenton/"},{l:"Fediverse",u:"https://fedi.freevariable.com/@willb"},{l:"Buzzwords-Profil",u:"https://2026.berlinbuzzwords.de/speaker/william-benton/"},{l:"Talk-Seite",u:"https://2026.berlinbuzzwords.de/session/sunset-for-the-wild-west-making-ml-disciplined-by-default/"}],
-    next:{kind:"break", time:"15:30", desc:"Kaffeepause", brkEnd:"16:00",
-          after:{time:"17:10", desc:"Closing Session \u00b7 Kesselhaus"}} },
-];
+function applySchedule(s){
+  META    = s.meta || {};
+  AV      = META.avatarBase || "";
+  if(META.date) DAY = parseDate(META.date);
+  BREAKS  = Array.isArray(s.breaks) ? s.breaks : [];
+  CLOSING = s.closing || null;
+  talks = (s.talks || []).map((t,i)=>{
+    const photo = /^https?:\/\//.test(t.photo||"") ? t.photo : AV + (t.photo||"");
+    return {...t, n: (t.n!=null ? t.n : i+1), photo};
+  });
+  buildNext();
+  if(META.room) document.title = "Stage Host · " + META.room;
+}
 
 /* ---------- time helpers ---------- */
 function hm(str){const [h,m]=str.split(":").map(Number);const d=new Date(DAY[0],DAY[1],DAY[2],h,m,0,0);return d;}
@@ -195,7 +164,6 @@ function curState(){
 function renderAgenda(){
   const {n,liveIdx}=curState();
   let rows="";
-  const breaksAfter={2:["Frühstückspause","10:40 – 11:10"],4:["Mittagspause","12:40 – 14:00"],6:["Kaffeepause","15:30 – 16:00"]};
   talks.forEach((t,i)=>{
     const isNow = (i===liveIdx);
     const tag = isNow ? `<span class="nowtag">${n>=hm(t.start)?'LÄUFT':'GLEICH'}</span>` : "";
@@ -203,20 +171,22 @@ function renderAgenda(){
       <div class="t">${t.start}</div>
       <div><div class="tt">${esc(t.title)}${tag}</div><div class="sp">${esc(t.speaker)}</div></div>
       <div class="num">${t.n}</div></div>`;
-    if(breaksAfter[t.n]) rows+=`<div class="brk">${breaksAfter[t.n][0]} · ${breaksAfter[t.n][1]}</div>`;
+    const b = BREAKS.find(x=>x.afterTalk===t.n);
+    if(b) rows+=`<div class="brk">${esc(b.name)} · ${b.start} – ${b.end}</div>`;
   });
-  rows+=`<div class="brk">Closing Session · 17:10 · Kesselhaus</div>`;
+  if(CLOSING) rows+=`<div class="brk">${esc(CLOSING.label)} · ${CLOSING.time} · ${esc(CLOSING.room)}</div>`;
+  const count=talks.length, range=count?`${talks[0].start} – ${talks[count-1].end}`:"";
   return `<div class="agenda">
-    <div class="kicker"><span class="pill">FRANNZ SALON</span> Dienstag · 9. Juni 2026</div>
-    <h1>Deine Talks heute</h1>
-    <div class="sub"><b>6 Sessions</b> · 09:30 – 15:30 · tippe einen Talk an</div>
+    <div class="kicker"><span class="pill">${esc((META.room||"").toUpperCase())}</span> ${esc(META.dayLabel||"")}</div>
+    <h1>${esc(META.agendaTitle||"Deine Talks heute")}</h1>
+    <div class="sub"><b>${count} Sessions</b> · ${range} · tippe einen Talk an</div>
     <div class="list">${rows}</div>
   </div>`;
 }
 
 function renderOverview(t){
-  return `<div class="kicker"><span class="pill">TALK ${t.n}/8</span> ${esc(t.type)}</div>
-    <div class="timeblock">${t.start} – ${t.end} <span class="dur">· Frannz Salon</span></div>
+  return `<div class="kicker"><span class="pill">TALK ${t.n}/${talks.length}</span> ${esc(t.type)}</div>
+    <div class="timeblock">${t.start} – ${t.end} <span class="dur">· ${esc(META.room||"")}</span></div>
     <div class="ov-title">${esc(t.title)}</div>
     <div class="spk">
       <img class="ava" src="${t.photo}" alt="${esc(t.speaker)}"
@@ -478,11 +448,31 @@ setInterval(checkAlerts,1000);
 document.getElementById("test10").onclick=()=>{unlockAudio();fireAlert(10);};
 document.getElementById("test5").onclick=()=>{unlockAudio();fireAlert(5);};
 
-/* boot */
-buildSlides();
-render();
-setInterval(tick,1000);
-tick();
+/* boot — load the schedule JSON, then start the app */
+function scheduleFile(){
+  return new URLSearchParams(location.search).get("data") || "data/frannz-salon-2026-06-09.json";
+}
+async function boot(){
+  const file=scheduleFile();
+  try{
+    const res=await fetch(file,{cache:"no-cache"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    applySchedule(await res.json());
+  }catch(err){
+    stage.innerHTML=`<div class="slide show">
+      <div class="kicker">Fehler</div>
+      <h1 style="font-family:'Bricolage Grotesque';font-weight:800;font-size:24px;margin:10px 0 6px">Schedule konnte nicht geladen werden</h1>
+      <div class="cd-for"><b>${esc(file)}</b><br>${esc(String(err&&err.message||err))}</div>
+      <div class="anm-hint" style="margin-top:14px">ℹ️ <span>Beim lokalen Öffnen via <b>file://</b> blockiert der Browser <code>fetch</code>. Über einen Webserver (z.&nbsp;B. GitHub Pages) öffnen.</span></div>
+    </div>`;
+    return;
+  }
+  buildSlides();
+  render();
+  setInterval(tick,1000);
+  tick();
+}
+boot();
 </script>
 </body>
 </html>

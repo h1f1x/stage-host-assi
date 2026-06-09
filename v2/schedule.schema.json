@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://h1f1x.github.io/stage-host-assi/v2/schedule.schema.json",
+  "title": "Stage Host schedule",
+  "description": "One room, one day. Content for the Stage Host assistant (v2). Each talk's \"next\" pointer and the agenda breaks/closing lines are DERIVED at runtime from this data — do not author them here.",
+  "type": "object",
+  "required": ["meta", "talks"],
+  "additionalProperties": true,
+  "properties": {
+    "$schema": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "required": ["room", "date"],
+      "additionalProperties": false,
+      "properties": {
+        "event":       { "type": "string", "description": "Conference name, e.g. \"Berlin Buzzwords\"." },
+        "room":        { "type": "string", "description": "Room/stage name, e.g. \"Frannz Salon\". Shown (uppercased) on the agenda pill and on each overview." },
+        "date":        { "type": "string", "format": "date", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "Event day, ISO YYYY-MM-DD. Drives all countdowns." },
+        "dayLabel":    { "type": "string", "description": "Human label shown on the agenda, e.g. \"Dienstag · 9. Juni 2026\"." },
+        "agendaTitle": { "type": "string", "description": "Agenda headline. Default: \"Deine Talks heute\"." },
+        "avatarBase":  { "type": "string", "description": "Optional base URL prepended to any talk.photo that is a bare filename (not an http(s) URL)." }
+      }
+    },
+    "talks": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Talks in chronological order.",
+      "items": {
+        "type": "object",
+        "required": ["start", "end", "type", "title", "speaker", "intro", "hand"],
+        "additionalProperties": false,
+        "properties": {
+          "n":       { "type": "integer", "minimum": 1, "description": "Talk number. Optional — defaults to position (1-based)." },
+          "start":   { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$", "description": "Start time, 24h \"HH:MM\"." },
+          "end":     { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$", "description": "End time (includes Q&A), 24h \"HH:MM\"." },
+          "type":    { "type": "string", "description": "e.g. \"Talk\", \"Short Talk\", \"Keynote\"." },
+          "title":   { "type": "string" },
+          "speaker": { "type": "string", "description": "Speaker name (or comma-joined names)." },
+          "role":    { "type": "string", "description": "Role · affiliation, e.g. \"Software Engineer · NVIDIA\"." },
+          "tags":    { "type": "array", "items": { "type": "string" }, "description": "Tracks/labels; the duration label (e.g. \"Talk · 40 min\") is conventionally the last tag." },
+          "photo":   { "type": "string", "description": "Speaker photo: full http(s) URL, or a bare filename resolved against meta.avatarBase. Falls back to initials if it fails to load." },
+          "url":     { "type": "string", "description": "Session page URL." },
+          "intro":   { "type": "string", "description": "Anmoderation script the host reads: a few short, plain-language sentences. Split into sentences automatically." },
+          "hand":    { "type": "string", "description": "One upbeat hand-over line, ideally ending with the speaker's name." },
+          "links":   {
+            "type": "array",
+            "description": "Quick links shown on the overview.",
+            "items": {
+              "type": "object",
+              "required": ["l", "u"],
+              "additionalProperties": false,
+              "properties": {
+                "l": { "type": "string", "description": "Label, e.g. \"LinkedIn\"." },
+                "u": { "type": "string", "description": "URL." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "breaks": {
+      "type": "array",
+      "description": "Breaks shown on the agenda and used to compute each talk's \"next\" pointer.",
+      "items": {
+        "type": "object",
+        "required": ["afterTalk", "name", "start", "end"],
+        "additionalProperties": false,
+        "properties": {
+          "afterTalk": { "type": "integer", "minimum": 1, "description": "The talk number (n) this break follows." },
+          "name":      { "type": "string", "description": "e.g. \"Mittagspause\"." },
+          "start":     { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" },
+          "end":       { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" }
+        }
+      }
+    },
+    "closing": {
+      "type": ["object", "null"],
+      "description": "Closing item shown at the bottom of the agenda and as the final \"after\" pointer.",
+      "required": ["label", "time"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "description": "e.g. \"Closing Session\"." },
+        "time":  { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" },
+        "room":  { "type": "string", "description": "Where it happens, e.g. \"Kesselhaus\"." }
+      }
+    }
+  }
+}

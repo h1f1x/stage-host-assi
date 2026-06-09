@@ -1,0 +1,238 @@
+{
+  "$schema": "../schedule.schema.json",
+  "meta": {
+    "event": "Berlin Buzzwords",
+    "room": "Frannz Salon",
+    "date": "2026-06-09",
+    "dayLabel": "Dienstag · 9. Juni 2026",
+    "agendaTitle": "Deine Talks heute",
+    "avatarBase": "https://program.berlinbuzzwords.de/media/avatars/"
+  },
+  "talks": [
+    {
+      "n": 1,
+      "start": "09:30",
+      "end": "09:50",
+      "type": "Short Talk",
+      "title": "Writes, 3 ways: Postgres, Apache Kafka® and Apache Iceberg™",
+      "speaker": "Celeste Horgan",
+      "role": "Sr. OSS Developer Advocate & OSPO Lead · Snowflake",
+      "tags": [
+        "Data Science",
+        "Scale",
+        "Store",
+        "Short Talk · 20 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/KVW9PZ_xJNiKyO.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/writes-3-ways-postgres-apache-kafka-and-apache-iceberg/",
+      "intro": "Good morning, everyone, and welcome to the Frannz Salon! Great to see you bright and early. The best way to learn something new is to compare it to something you already know. Our first speaker does exactly that. She will look at three popular data tools — Postgres, Apache Kafka, and Apache Iceberg — and how each one writes data. Along the way, we will see how data storage has changed over the years. She leads open source work at Snowflake.",
+      "hand": "Joining us from the open-source team at Snowflake, let's give a warm welcome to Celeste Horgan!",
+      "links": [
+        {
+          "l": "LinkedIn",
+          "u": "https://www.linkedin.com/in/celeste-horgan/"
+        },
+        {
+          "l": "Buzzwords-Profil",
+          "u": "https://2026.berlinbuzzwords.de/speaker/celeste-horgan/"
+        },
+        {
+          "l": "Talk-Seite",
+          "u": "https://2026.berlinbuzzwords.de/session/writes-3-ways-postgres-apache-kafka-and-apache-iceberg/"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "type": "Talk",
+      "title": "GitOps for n8n: Treating Workflows as Code",
+      "speaker": "Joao Gilberto Magalhaes",
+      "role": "Software Developer & DevOps / Platform Engineer",
+      "tags": [
+        "Operations",
+        "Scale",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/BNZBWR_Tmph8m6.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/gitops-for-n8n-treating-workflows-as-code/",
+      "intro": "Welcome back. Many teams build automation workflows by clicking around in a tool, then copy them by hand between systems. That makes changes hard to track. Our next speaker built an open source tool to fix this. It brings “GitOps” to n8n: you keep your workflows in Git, review them, and deploy them safely. He will show it live, with rollbacks and real lessons. He is a software developer and platform engineer.",
+      "hand": "Straight from the world of platform engineering, the stage is yours, Joao Gilberto Magalhaes!",
+      "links": [
+        {
+          "l": "LinkedIn",
+          "u": "https://linkedin.com/in/byjg"
+        },
+        {
+          "l": "Buzzwords-Profil",
+          "u": "https://2026.berlinbuzzwords.de/speaker/joao-gilberto-magalhaes/"
+        },
+        {
+          "l": "Talk-Seite",
+          "u": "https://2026.berlinbuzzwords.de/session/gitops-for-n8n-treating-workflows-as-code/"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "start": "11:10",
+      "end": "11:50",
+      "type": "Talk",
+      "title": "Real-Time ML Pipelines: Feature Chaining with Chronon",
+      "speaker": "Varant Zanoyan",
+      "role": "Co-Founder · Zipline AI · Chronon author",
+      "tags": [
+        "Data Science",
+        "Search",
+        "Stream",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/EUZAP8_Epe70ar.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/real-time-ml-pipelines-feature-chaining-with-chronon/",
+      "intro": "Our next talk is about speed. Modern machine learning needs fresh data in real time — often in less than a tenth of a second. That is very hard to do. Our speaker helped build Chronon, an open source platform made for exactly this. Using a search example, he will show how to mix embeddings with other data while keeping things fast. He spent more than ten years building data systems at Airbnb and Palantir, and now co-founded Zipline AI.",
+      "hand": "Coming to us from Zipline AI, over to you, Varant Zanoyan!",
+      "links": [
+        {
+          "l": "Buzzwords-Profil",
+          "u": "https://2026.berlinbuzzwords.de/speaker/varant-zanoyan/"
+        },
+        {
+          "l": "Talk-Seite",
+          "u": "https://2026.berlinbuzzwords.de/session/real-time-ml-pipelines-feature-chaining-with-chronon/"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "start": "12:00",
+      "end": "12:40",
+      "type": "Talk",
+      "title": "The Failures That Don't Crash: MLOps for AI Agents",
+      "speaker": "Bartosz Mikulski",
+      "role": "Senior Data Engineer · Start.io",
+      "tags": [
+        "Data Science",
+        "Operations",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/FBBMGW_isrE4QY.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/the-failures-that-dont-crash-mlops-for-ai-agents/",
+      "intro": "Welcome back from lunch! I hope you ate well. AI agents often fail in a quiet way: they give a confident answer that is simply wrong, and nothing crashes. Our next speaker takes four trusted ideas from large systems and shows how to use them with AI agents — like shadow testing and smarter circuit breakers. He is a Senior Data Engineer at Start.io and has written hundreds of articles on this topic.",
+      "hand": "All the way from Start.io, please give it up for Bartosz Mikulski!",
+      "links": [
+        {
+          "l": "Blog",
+          "u": "https://mikulskibartosz.name"
+        },
+        {
+          "l": "LinkedIn",
+          "u": "https://www.linkedin.com/in/mikulskibartosz/"
+        },
+        {
+          "l": "Buzzwords-Profil",
+          "u": "https://2026.berlinbuzzwords.de/speaker/bartosz-mikulski/"
+        },
+        {
+          "l": "Talk-Seite",
+          "u": "https://2026.berlinbuzzwords.de/session/the-failures-that-dont-crash-mlops-for-ai-agents/"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "start": "14:00",
+      "end": "14:40",
+      "type": "Talk",
+      "title": "How to Tell If Your Agent Used the Right Stuff",
+      "speaker": "Apurva Misra",
+      "role": "ML Engineer & Founder · Sentick",
+      "tags": [
+        "Data Science",
+        "Operations",
+        "Stories",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/H798FW_8wZ5nd6.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/how-to-tell-if-your-agent-used-the-right-stuff/",
+      "intro": "Our next talk stays with AI agents. Many “agent failures” are really context problems in disguise: the agent never saw the right information. Our speaker will show how to check what your agent actually used — with tracing, good test sets, and small probe questions. That way you can measure quality, not just guess. She is a machine learning engineer and the founder of Sentick.",
+      "hand": "Joining us from Sentick, a big welcome for Apurva Misra!",
+      "links": [
+        {
+          "l": "LinkedIn",
+          "u": "https://www.linkedin.com/in/misraapurva/"
+        },
+        {
+          "l": "Buzzwords-Profil",
+          "u": "https://2026.berlinbuzzwords.de/speaker/apurva-misra/"
+        },
+        {
+          "l": "Talk-Seite",
+          "u": "https://2026.berlinbuzzwords.de/session/how-to-tell-if-your-agent-used-the-right-stuff/"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "start": "14:50",
+      "end": "15:30",
+      "type": "Talk",
+      "title": "Sunset for the Wild West: Making ML disciplined by default",
+      "speaker": "William Benton",
+      "role": "Software Engineer · NVIDIA",
+      "tags": [
+        "Data Science",
+        "Operations",
+        "Scale",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/V7EF3R_GZC4FA0.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/sunset-for-the-wild-west-making-ml-disciplined-by-default/",
+      "intro": "This is our last talk here in the Frannz Salon today. Many machine learning tricks start as clever hacks that just happen to work. But building real, reliable systems needs more order than that. Our last speaker shares an open source stack that helps both researchers and infrastructure teams — and shows their goals are closer than they think. He is a software engineer at NVIDIA.",
+      "hand": "Straight from the team at NVIDIA, let's hear it for William Benton!",
+      "links": [
+        {
+          "l": "LinkedIn",
+          "u": "https://www.linkedin.com/in/willbenton/"
+        },
+        {
+          "l": "Fediverse",
+          "u": "https://fedi.freevariable.com/@willb"
+        },
+        {
+          "l": "Buzzwords-Profil",
+          "u": "https://2026.berlinbuzzwords.de/speaker/william-benton/"
+        },
+        {
+          "l": "Talk-Seite",
+          "u": "https://2026.berlinbuzzwords.de/session/sunset-for-the-wild-west-making-ml-disciplined-by-default/"
+        }
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "afterTalk": 2,
+      "name": "Frühstückspause",
+      "start": "10:40",
+      "end": "11:10"
+    },
+    {
+      "afterTalk": 4,
+      "name": "Mittagspause",
+      "start": "12:40",
+      "end": "14:00"
+    },
+    {
+      "afterTalk": 6,
+      "name": "Kaffeepause",
+      "start": "15:30",
+      "end": "16:00"
+    }
+  ],
+  "closing": {
+    "label": "Closing Session",
+    "time": "17:10",
+    "room": "Kesselhaus"
+  }
+}
