@@ -2,6 +2,7 @@
   "schedules": [
     { "file": "data/frannz-salon-2026-06-09.json", "label": "Frannz Salon · Di 9. Juni" },
     { "file": "data/maschinenhaus-2026-06-09.json", "label": "Maschinenhaus · Di 9. Juni" },
-    { "file": "data/kesselhaus-2026-06-09.json", "label": "Kesselhaus · Di 9. Juni" }
+    { "file": "data/kesselhaus-2026-06-09.json", "label": "Kesselhaus · Di 9. Juni" },
+    { "file": "data/palais-atelier-2026-06-09.json", "label": "Palais Atelier · Di 9. Juni" }
   ]
 }

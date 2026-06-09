@@ -1,0 +1,234 @@
+{
+  "$schema": "../schedule.schema.json",
+  "meta": {
+    "event": "Berlin Buzzwords",
+    "room": "Palais Atelier",
+    "date": "2026-06-09",
+    "dayLabel": "Dienstag · 9. Juni 2026",
+    "agendaTitle": "Deine Talks heute",
+    "avatarBase": "https://program.berlinbuzzwords.de/media/avatars/"
+  },
+  "talks": [
+    {
+      "n": 1,
+      "start": "09:30",
+      "end": "09:50",
+      "type": "Short Talk",
+      "title": "Personalize Search Results with OpenSearch Agentic Memory",
+      "speaker": "Hajer Bouafif",
+      "role": "Sr. OpenSearch Solutions Architect · AWS",
+      "tags": [
+        "Search",
+        "Short Talk · 20 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/HVNPAP_hJj5RhO.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/personalize-search-results-with-opensearch-agentic-memory/",
+      "intro": "Good morning, everyone, and welcome to our first talk in this room. Normally, making search feel personal takes a lot of machinery — recommendation engines, feature stores, trained models. Hajer will show a lighter way: small agents that share a memory inside OpenSearch to understand each user and adjust results on the fly. Same query, different results depending on who's asking. Hajer is a senior OpenSearch solutions architect at AWS, so she's helped many teams build exactly this.",
+      "hand": "Let's see personalization without the heavy lifting — please welcome Hajer Bouafif!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/hajer-bouafif/"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "type": "Talk",
+      "title": "Kafi Streams: Complex Stream Processing Made Simple",
+      "speaker": "Ralph Matthias Debusmann",
+      "role": "Lead Enterprise Kafka Engineer · Migros",
+      "tags": [
+        "Data Science",
+        "Store",
+        "Stream",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/N3TCBS_Gl0KIhY.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/kafi-streams-complex-stream-processing-made-simple/",
+      "intro": "Welcome back. Stream processing has a reputation for being hard — full of jargon like co-partitioning, windowing, and state stores. Ralph thinks it doesn't have to be. He'll unveil Kafi Streams, an open-source Python library that treats streaming like plain batch work, so it behaves the way you'd expect. It's aimed at the everyday eighty percent of use cases that don't need extreme scale. Ralph is the lead Kafka engineer at Migros, Switzerland's big retailer.",
+      "hand": "Let's make stream processing simple — please welcome Ralph Matthias Debusmann!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/ralph-matthias-debusmann/"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "start": "11:10",
+      "end": "11:50",
+      "type": "Talk",
+      "title": "DuckDB beyond the notebook",
+      "speaker": "Matthias Niehoff",
+      "role": "Head of Data · codecentric AG",
+      "tags": [
+        "Store",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/8QDF3Q_RCl9OTA.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/duckdb-beyond-the-notebook/",
+      "intro": "Welcome, everyone. Most people know DuckDB as a handy tool for crunching data in a notebook. Matthias will show it can do far more — running analytics right in the browser, in serverless functions, and inside everyday apps, all without heavy infrastructure. Expect lots of live demos and very few slides. Matthias is Head of Data at codecentric, where he helps companies design their data architectures.",
+      "hand": "Let's take DuckDB out of the notebook — please welcome Matthias Niehoff!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/matthias-niehoff/"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "start": "12:00",
+      "end": "12:40",
+      "type": "Talk",
+      "title": "Escaping the Cloud: High-Performance AI in your Browser",
+      "speaker": "Johannes Kolbe",
+      "role": "Data Scientist · Computer Vision",
+      "tags": [
+        "Operations",
+        "Scale",
+        "Society, Ethics & Sustainability",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/QFSMUG_UekUIHx.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/escaping-the-cloud-high-performance-ai-in-your-browser/",
+      "intro": "Welcome back. Running AI on servers is expensive, slow over the network, and tricky for privacy. Johannes asks a fun question: what if we ran it right in your browser tab instead? He'll walk through the tools that make this possible and show real demos of language, speech, and vision models running locally. He'll also be honest about the limits in 2026. Johannes is a data scientist who has worked in computer vision for over ten years.",
+      "hand": "Let's bring AI into the browser — please welcome Johannes Kolbe!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/johannes-kolbe/"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "start": "14:00",
+      "end": "14:40",
+      "type": "Talk",
+      "title": "What If We've Been Scaling Stream Processing Wrong All Along",
+      "speaker": "Hartmut Armbruster",
+      "role": "Software Engineer & Tech Lead · Data Streaming",
+      "tags": [
+        "Scale",
+        "Stream",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/F3BEM7_D2dlYf6.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/what-if-weve-been-scaling-stream-processing-wrong-all-along/",
+      "intro": "Welcome, everyone. Most streaming apps don't run at Uber scale, yet we still pay the full price of distributed systems — endless rebalances, timeouts, and idle replicas. Hartmut will question that habit and share an early exploration of a lighter approach that keeps the familiar Kafka Streams style but drops the assumption that everything must be distributed. It's an invitation to rethink conventional wisdom. Hartmut is a software engineer and tech lead focused on data streaming and architecture.",
+      "hand": "Let's question how we scale streaming — please welcome Hartmut Armbruster!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/hartmut-armbruster/"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "start": "14:50",
+      "end": "15:30",
+      "type": "Talk",
+      "title": "Detecting Hidden Bias in Datasets Before Models Fail",
+      "speaker": "Stas Don",
+      "role": "Data Scientist · eBay",
+      "tags": [
+        "Data Science",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/9RKSWN_VgViV4f.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/detecting-hidden-bias-in-datasets-before-models-fail/",
+      "intro": "Welcome back. Machine learning models usually fail because of the data, not the algorithm — and the warning signs often hide from standard metrics. Stas will show practical ways to catch problems early: imbalance, data leakage, and gaps in coverage across regions or time. Everything uses open-source tools you can apply right away. Stas is a data scientist at eBay who works on model reliability at scale.",
+      "hand": "Let's catch bias before it bites — please welcome Stas Don!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/stas-don/"
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "start": "16:00",
+      "end": "16:40",
+      "type": "Talk",
+      "title": "What you should know about constraints in PostgreSQL 18",
+      "speaker": "Gülçin Yıldırım Jelinek",
+      "role": "PostgreSQL Engineer · Xata",
+      "tags": [
+        "Operations",
+        "Store",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/B8AKHE_c1O8xAl.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/what-you-should-know-about-constraints-in-postgresql-18/",
+      "intro": "Welcome, everyone. Constraints are the rules that keep your database honest, and PostgreSQL 18 brings some big upgrades. Gülçin will walk through how constraints really work under the hood, then cover what's new — things like temporal keys and NOT NULL becoming a first-class citizen. It's a practical look you can take straight back to your own systems. Gülçin works on PostgreSQL engineering at Xata and sits on the PostgreSQL Europe board.",
+      "hand": "Let's get into what's new in Postgres 18 — please welcome Gülçin Yıldırım Jelinek!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/gulcin-yildirim-jelinek/"
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "start": "16:50",
+      "end": "17:10",
+      "type": "Short Talk",
+      "title": "AI in the physical world: from observation to discovery",
+      "speaker": "Dmitriy Kostunin, Julian von Hoerschelmann-Schliwinski",
+      "role": "Researcher · DESY / CTAO",
+      "tags": [
+        "Data Science",
+        "People & Community",
+        "Stories",
+        "Short Talk · 20 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/TYY9M8_fb6GC27.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/ai-in-the-physical-world-from-observation-to-discovery/",
+      "intro": "Welcome to the last talk in this room. We mostly think of AI as living in text and screens, but it's increasingly working with real instruments and experiments. Dmitriy and Julian study how physicists use deep learning and agents to analyse nature itself — from particle collisions to telescopes. They'll share honest results, including where the bold claims don't hold up. Dmitriy is a researcher at DESY working on a next-generation telescope observatory.",
+      "hand": "Let's see what happens when AI meets reality — please welcome Dmitriy Kostunin and Julian von Hoerschelmann-Schliwinski!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/dmitriy-kostunin/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/julian-von-hoerschelmann-schliwinski/"
+        }
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "afterTalk": 2,
+      "name": "Breakfast Break",
+      "start": "10:40",
+      "end": "11:10"
+    },
+    {
+      "afterTalk": 4,
+      "name": "Lunch Break",
+      "start": "12:40",
+      "end": "14:00"
+    },
+    {
+      "afterTalk": 6,
+      "name": "Coffee Break",
+      "start": "15:30",
+      "end": "16:00"
+    }
+  ],
+  "closing": {
+    "label": "Closing Session",
+    "time": "17:10",
+    "room": "Kesselhaus"
+  }
+}
