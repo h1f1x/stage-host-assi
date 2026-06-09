@@ -8,7 +8,217 @@
     "agendaTitle": "Deine Talks heute",
     "avatarBase": "https://program.berlinbuzzwords.de/media/avatars/"
   },
-  "talks": [],
-  "breaks": [],
-  "closing": { "label": "Closing Session", "time": "17:10", "room": "Kesselhaus" }
+  "talks": [
+    {
+      "n": 1,
+      "start": "09:30",
+      "end": "09:50",
+      "type": "Short Talk",
+      "title": "Circular Dependency Fixes when Bootstrapping a Golden Set",
+      "speaker": "Radu Gheorghe, Rafał Kuć",
+      "role": "Vespa.ai · Authologic",
+      "tags": [
+        "Data Science",
+        "Search",
+        "Short Talk · 20 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/3CMEKA_DwlKQxc.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/circular-dependency-fixes-when-bootstrapping-a-golden-set/",
+      "intro": "Welcome, everyone, and thanks for being here. This talk is about building a 'golden set' — the list of correct answers you use to check whether your search is any good. Here's the catch: to pick the best results you already need good search, and to build good search you need those results. Radu and Rafał will show practical ways out of that chicken-and-egg loop, from lexical tricks to training your own embedder. Both have spent more than a decade deep in search engines.",
+      "hand": "Let's untangle that loop together — please welcome Radu Gheorghe and Rafał Kuć!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/radu-gheorghe/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/rafal-kuc/"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "type": "Talk",
+      "title": "Text-to-Struct: Fine-tuning SLMs for Query Intent",
+      "speaker": "Hugo Jimenez, Sandra Bullón",
+      "role": "RavenPack",
+      "tags": [
+        "Data Science",
+        "Search",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/ZGXVRQ_b1uY4eW.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/text-to-struct-fine-tuning-slms-for-query-intent/",
+      "intro": "Welcome back, everyone. This talk is about helping a search engine understand what people really mean. A question like 'European bank guidance last quarter' mixes a topic with a date, and plain search often misses one or the other. Hugo and Sandra fine-tune small language models to turn messy questions into clean, structured queries. They work on financial search at RavenPack, where getting this right really matters.",
+      "hand": "Here's how to make search do the hard work for your users — please welcome Hugo Jimenez and Sandra Bullón!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/hugo-jimenez/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/sandra-bullon/"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "start": "11:10",
+      "end": "11:50",
+      "type": "Talk",
+      "title": "Context-Aware Segments: Solving the \"Scatter-Read\" Problem",
+      "speaker": "Rishav Sagar, Tejas Shah",
+      "role": "SDE II · AWS OpenSearch",
+      "tags": [
+        "Scale",
+        "Search",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/7GZANJ_DQ2yMvU.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/context-aware-segments-solving-the-scatter-read-problem/",
+      "intro": "Welcome, everyone. When you store data in OpenSearch, it gets spread across many small files called segments, sorted mostly by when it arrived. That means a simple filter has to check files that will never match, which wastes time and memory. Rishav and Tejas built a way to group related data together so the engine can skip whole files and answer faster. Rishav works on OpenSearch's core at AWS, so this comes straight from the source.",
+      "hand": "Let's see how grouping data smartly speeds everything up — please welcome Rishav Sagar and Tejas Shah!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/rishav-sagar/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/tejas-shah/"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "start": "12:00",
+      "end": "12:40",
+      "type": "Talk",
+      "title": "C++ Search for Database Kernels: Built In, Not Bolted On",
+      "speaker": "Andrey Abramov",
+      "role": "Founder & CTO · SereneDB",
+      "tags": [
+        "Scale",
+        "Search",
+        "Store",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/B7ZYXE_5kBcVjx.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/c-search-for-database-kernels-built-in-not-bolted-on/",
+      "intro": "Welcome back. Most search engines run as their own separate service, but this one is built to live right inside a database. Andrey will walk through IResearch, a C++ search library he has developed over a decade, and compare it honestly with Lucene and Tantivy. He'll also share the architectural bets that didn't pay off, which is often the most useful part. Andrey is the founder and CTO of SereneDB and earlier built the search engine inside ArangoDB.",
+      "hand": "Time for an honest story of search inside the database — please welcome Andrey Abramov!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/andrey-abramov/"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "start": "14:00",
+      "end": "14:40",
+      "type": "Talk",
+      "title": "One GPU, Four Retrieval Modes: Multi-Model Search Serving",
+      "speaker": "Filip Makraduli",
+      "role": "Machine Learning Engineer & Developer Relations",
+      "tags": [
+        "Scale",
+        "Search",
+        "Stories",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/8TWA3E_AUjMuXq.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/one-gpu-four-retrieval-modes-multi-model-search-serving/",
+      "intro": "Welcome, everyone. Modern search often runs four different models at once, and most teams put each one in its own container, wasting hardware. Filip will show how to serve all four from a single process on one GPU, and where each one actually earns its keep. Expect real benchmark numbers, not just theory. Filip is a London-based machine learning engineer who works closely with the open-source search community.",
+      "hand": "Let's get four models sharing one GPU — please welcome Filip Makraduli!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/filip-makraduli/"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "start": "14:50",
+      "end": "15:30",
+      "type": "Talk",
+      "title": "Zero downtime index upgrade in Apache Solr",
+      "speaker": "Rahul Goswami",
+      "role": "Principal Software Engineer · Commvault (Apache Solr committer)",
+      "tags": [
+        "Search",
+        "Stories",
+        "Talk · 40 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/MJVUJV_sMLRQBc.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/zero-downtime-index-upgrade-in-apache-solr/",
+      "intro": "Welcome back. Normally, upgrading Apache Solr across a major version means rebuilding your whole index from the original data — slow, costly, and sometimes impossible if that source is gone. Rahul will show a new way to upgrade an index in place, with no downtime. He'll cover how it works under the hood and where the limits are. Rahul is a Solr committer and a principal engineer at Commvault, with over a decade in search.",
+      "hand": "Here's how to upgrade Solr without the pain — please welcome Rahul Goswami!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/rahul-goswami/"
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "start": "16:50",
+      "end": "17:10",
+      "type": "Short Talk",
+      "title": "How to Survive the Vortex of LLM Change",
+      "speaker": "Carmen Iniesta, Carles Onielfa",
+      "role": "ML & NLP Engineers",
+      "tags": [
+        "People & Community",
+        "Search",
+        "Short Talk · 20 min"
+      ],
+      "photo": "https://program.berlinbuzzwords.de/media/avatars/MDSU3R_KQ38kDV.webp",
+      "url": "https://2026.berlinbuzzwords.de/session/how-to-survive-the-vortex-of-llm-change/",
+      "intro": "Welcome, everyone, to our last talk in this room. The world of language models changes almost weekly, and that's exhausting for teams trying to build real products. Carmen and Carles will share honest lessons from building an intelligent search product while the ground keeps shifting under them. They'll talk about how to test new models without breaking what already works, and how to stay sane. It's as much about people as it is about technology.",
+      "hand": "Let's learn to ride the wave instead of drowning in it — please welcome Carmen Iniesta and Carles Onielfa!",
+      "links": [
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/carmen-iniesta/"
+        },
+        {
+          "l": "Profile",
+          "u": "https://2026.berlinbuzzwords.de/speaker/carles-onielfa/"
+        }
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "afterTalk": 2,
+      "name": "Breakfast Break",
+      "start": "10:40",
+      "end": "11:10"
+    },
+    {
+      "afterTalk": 4,
+      "name": "Lunch Break",
+      "start": "12:40",
+      "end": "14:00"
+    },
+    {
+      "afterTalk": 6,
+      "name": "Coffee Break",
+      "start": "15:30",
+      "end": "16:00"
+    }
+  ],
+  "closing": {
+    "label": "Closing Session",
+    "time": "17:10",
+    "room": "Kesselhaus"
+  }
 }
